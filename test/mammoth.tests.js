@@ -427,3 +427,13 @@ test('should throw error if file is not a valid docx document', function() {
         assert.equal(error.message, "Could not find main document part. Are you sure this is a valid .docx file?");
     });
 });
+
+
+test('supports editable mode', function() {
+    var docxFile = createFakeDocxFile({
+        "word/document.xml": testData("editable/word/document.xml")
+    });
+    return mammoth.convertToHtml({file: docxFile}).then(function(result) {
+        assert.equal("<p><span data-editable-id=\"1\" contenteditable=\"true\">Hello.</span></p>", result.value);
+    });
+});
