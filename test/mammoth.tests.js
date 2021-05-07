@@ -434,6 +434,6 @@ test('supports editable mode', function() {
         "word/document.xml": testData("editable/word/document.xml")
     });
     return mammoth.convertToHtml({file: docxFile}).then(function(result) {
-        assert.equal("<p><span data-editable-id=\"1\" contenteditable=\"true\">Hello.</span></p>", result.value);
+        assert.equal("<p><span data-editable-id=\"1\">Hello.</span></p>", result.value);
     });
 });
