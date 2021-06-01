@@ -433,7 +433,16 @@ test('supports editable mode', function() {
     var docxFile = createFakeDocxFile({
         "word/document.xml": testData("editable/word/document.xml")
     });
-    return mammoth.convertToHtml({file: docxFile}).then(function(result) {
+    return mammoth.convertToHtml({file: docxFile}, {
+        convertText: function(element) {
+            if (element.attributes && element.attributes["w:editableId"]) {
+                return mammoth.html.freshElement("span", {
+                    "data-editable-id": element.attributes["w:editableId"]
+                }, [mammoth.html.text(element.value)]);
+            }
+            return mammoth.html.text(element.value);
+        }
+    }).then(function(result) {
         assert.equal("<p><span data-editable-id=\"1\">Hello.</span></p>", result.value);
     });
 });
