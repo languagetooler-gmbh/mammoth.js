@@ -446,3 +446,18 @@ test('supports editable mode', function() {
         assert.equal("<p><span data-editable-id=\"1\">Hello.</span></p>", result.value);
     });
 });
+
+test('supports width/height', function() {
+    var docxPath = path.join(__dirname, "test-data/scaled-image.docx");
+    return mammoth.convertToHtml({path: docxPath}, {
+        convertImage: mammoth.images.imgElement(function(element) {
+            return {
+                src: "foobar.jpg",
+                width: element.width,
+                height: element.height
+            };
+        })
+    }).then(function(result) {
+        assert.equal('<p><img src="foobar.jpg" width="62" height="81" /></p>', result.value);
+    });
+});
